@@ -8,14 +8,14 @@ import (
 )
 
 // NewTestClient returns a new test client
-func NewTestClient() (*scw.Client, error) {
+func NewTestClient(t *testing.T) (*scw.Client, error) {
 	env := [][]string{
 		{"SCW_DEFAULT_REGION", "nl-ams"},
 		{"SCW_DEFAULT_ZONE", "nl-ams-1"},
 	}
 
 	for _, v := range env {
-		os.Setenv(v[0], v[1])
+		t.Setenv(v[0], v[1])
 	}
 
 	client, err := scw.NewClient(scw.WithAuth(os.Getenv("SCW_ACCESS_KEY"), os.Getenv("SCW_SECRET_KEY")),
@@ -30,7 +30,7 @@ func NewTestClient() (*scw.Client, error) {
 // NewTestServer returns a new test server instance
 func NewTestServer() (server Server, err error) {
 	return server, server.Decode(map[string]string{
-		"image":           "bd0565d0-3e72-4ce2-b3b9-9d14df67ec2e",
+		"image":           "0d1cf4a3-aae9-4294-9fd9-fefffb297615",
 		"commercial_type": "DEV1-S",
 		"dynamic_ip":      "true",
 		"enable_ipv6":     "true",
@@ -48,7 +48,7 @@ func NewTestServerOpt() (opt ServerOpt, err error) {
 
 // TestListServersAll tests the ListServersAll method
 func TestListServersAll(t *testing.T) {
-	client, err := NewTestClient()
+	client, err := NewTestClient(t)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -66,7 +66,7 @@ func TestListServersAll(t *testing.T) {
 
 // TestCreateServer tests the CreateServer method
 func TestCreateServer(t *testing.T) {
-	client, err := NewTestClient()
+	client, err := NewTestClient(t)
 	if err != nil {
 		t.Fatal(err)
 	}

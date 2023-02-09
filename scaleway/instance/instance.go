@@ -135,7 +135,6 @@ func (a *API) DeleteServer(server *Server) error {
 		return err
 	}
 
-	// TODO: Figure out what's going on as this does not seem to work
 	for _, volume := range server.Volumes {
 		err := a.Native().DeleteVolume(&instance.DeleteVolumeRequest{Zone: server.Zone, VolumeID: volume.ID})
 		if err != nil {
