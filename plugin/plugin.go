@@ -29,7 +29,6 @@ var _ target.Target = (*Plugin)(nil)
 type Plugin struct {
 	State
 	logger   hclog.Logger
-	client   *scw.Client
 	instance *instance.API
 	cluster  *scaleutils.ClusterScaleUtils
 }
@@ -69,13 +68,13 @@ func (p *Plugin) SetConfig(config map[string]string) error {
 		return err
 	}
 
-	p.client, err = scw.NewClient(scw.WithAuth(conf.AccessKey, conf.SecretKey),
+	client, err := scw.NewClient(scw.WithAuth(conf.AccessKey, conf.SecretKey),
 		scw.WithDefaultProjectID(conf.ProjectID), scw.WithEnv())
 	if err != nil {
 		return err
 	}
 
-	p.instance = instance.NewAPI(p.client)
+	p.instance = instance.NewAPI(client)
 
 	p.cluster, err = scaleutils.NewClusterScaleUtils(nomad.ConfigFromNamespacedMap(config), p.logger)
 	if err != nil {
