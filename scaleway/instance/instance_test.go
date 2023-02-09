@@ -30,7 +30,7 @@ func NewTestClient() (*scw.Client, error) {
 // NewTestServer returns a new test server instance
 func NewTestServer() (server Server, err error) {
 	return server, server.Decode(map[string]string{
-		"image":           "bd0565d0-3e72-4ce2-b3b9-9d14df67ec2e",
+		"image":           "0d1cf4a3-aae9-4294-9fd9-fefffb297615",
 		"commercial_type": "DEV1-S",
 		"dynamic_ip":      "true",
 		"enable_ipv6":     "true",
