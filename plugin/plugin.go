@@ -145,7 +145,7 @@ func (p *Plugin) ScaleUp(blueprint instance.Server, n int64, opt *instance.Serve
 	wg := p.doAsyncScale(num, p.doScaleUp(ch, blueprint, opt))
 
 	// Create n servers
-	for i := num; i < num; i++ {
+	for i := 0; i < num; i++ {
 		ch <- i
 	}
 
