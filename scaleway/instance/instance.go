@@ -23,6 +23,18 @@ func (a *API) Native() *instance.API {
 	return (*instance.API)(a)
 }
 
+// RefreshServer refreshes a server object's attributes
+func (a *API) RefreshServer(server *Server) error {
+	resp, err := a.Native().GetServer(&instance.GetServerRequest{Zone: server.Zone, ServerID: server.ID})
+	if err != nil {
+		return err
+	}
+
+	*server = Server(*resp.Server)
+
+	return nil
+}
+
 // ListServers performs the ListServerRequest and returns a list of servers
 func (a *API) ListServers(blueprint Server) (*ListServersResponse, error) {
 	resp, err := a.Native().ListServers(blueprint.ListServersRequest())
@@ -124,6 +136,12 @@ func (a *API) DeleteServer(server *Server) error {
 	var (
 		timeout = time.Minute * 5
 	)
+
+	if len(server.Volumes) == 0 {
+		if err := a.RefreshServer(server); err != nil {
+			return err
+		}
+	}
 
 	err := a.Native().ServerActionAndWait(server.ActionAndWaitRequest(instance.ServerActionPoweroff, timeout))
 	if err != nil {
