@@ -60,7 +60,7 @@ func (p *Plugin) PluginInfo() (*base.PluginInfo, error) {
 
 // SetConfig sets the plugin configuration, usually called by the Nomad autoscaler
 func (p *Plugin) SetConfig(config map[string]string) error {
-	p.logger.Debug("set config", "config", config)
+	p.logger.Debug("Seting config", "config", config)
 
 	var conf Config
 	err := mapstructure.Decode(config, &conf)
@@ -88,7 +88,7 @@ func (p *Plugin) SetConfig(config map[string]string) error {
 
 // Scale performs a scaling action against the target
 func (p *Plugin) Scale(action sdk.ScalingAction, config map[string]string) error {
-	p.logger.Debug("received scale action", "count", action.Count, "reason", action.Reason)
+	p.logger.Debug("Received scale action", "count", action.Count, "reason", action.Reason)
 
 	p.SetActive()
 	defer p.SetIdle()
@@ -115,7 +115,7 @@ func (p *Plugin) Scale(action sdk.ScalingAction, config map[string]string) error
 		return err
 	}
 
-	p.logger.Debug("scaling", action.Direction, "current servers:", servers.Count())
+	p.logger.Debug("Scaling", "direction", action.Direction, "current servers", servers.Count())
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Hour)
 	defer cancel()
@@ -129,7 +129,7 @@ func (p *Plugin) Scale(action sdk.ScalingAction, config map[string]string) error
 		return nil
 	}
 
-	p.logger.Debug("unknown scale direction:", action.Direction)
+	p.logger.Debug("Unknown scale direction", "direction", action.Direction)
 
 	return nil
 }
@@ -161,7 +161,7 @@ func (p *Plugin) doScaleUp(ch chan int, blueprint instance.Server, opt *instance
 		for range ch {
 			_, err := p.instance.CreateServer(blueprint, opt)
 			if err != nil {
-				p.logger.Error("Error while creating scaleway server:", err)
+				p.logger.Error("Could not create Scaleway server", "error", err)
 			}
 		}
 	}
@@ -204,7 +204,7 @@ func (p *Plugin) doScaleDown(ch chan *instance.Server) func() {
 		for server := range ch {
 			err := p.instance.DeleteServer(server)
 			if err != nil {
-				p.logger.Error("Error while removing server:", err)
+				p.logger.Error("Could not remove Scaleway server", "error", err)
 			}
 		}
 	}
@@ -244,14 +244,14 @@ func (p *Plugin) Status(config map[string]string) (*sdk.TargetStatus, error) {
 		return nil, err
 	}
 
-	p.logger.Debug("fetching servers from Scaleway")
+	p.logger.Debug("Fetching servers from Scaleway")
 
 	servers, err := p.instance.ListServersAll(blueprint)
 	if err != nil {
 		return nil, err
 	}
 
-	p.logger.Debug("finished fetching servers from Scaleway")
+	p.logger.Debug("Finished fetching servers from Scaleway")
 
 	status := &sdk.TargetStatus{
 		Ready: servers.Ready(),
