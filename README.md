@@ -56,6 +56,7 @@ check "allocated-cpu" {
 - `commercial_type` `(string: "")` - A Scaleway server instance commercial type. Refer to the [Scaleway Pricing](https://www.scaleway.com/en/pricing/?tags=compute) page for a list of available types.
 - `image` `(string: "")` - The Scaleway image ID.
 - `enable_ipv6` `(string: "false")` - A boolean in string format. If set to `"true"`, sets an IPv6 IP address after instance creation.
+- `routed_ip` `(string: "false")` - A boolean in string format. If set to `"true"`, enables routed IP mode for this instance.
 - `security_group` `(string: "")` - The Scaleawy server instance security group ID.
 - `placement_group` `(string: "")` - The Scaleway server instance placement group ID.
 

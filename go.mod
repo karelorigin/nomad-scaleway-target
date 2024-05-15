@@ -7,7 +7,7 @@ require (
 	github.com/hashicorp/nomad-autoscaler v0.3.7
 	github.com/hashicorp/nomad/api v0.0.0-20220519231241-2b054e38e91a
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.13
+	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.26
 )
 
 require (

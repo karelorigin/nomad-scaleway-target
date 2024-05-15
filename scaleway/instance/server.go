@@ -20,6 +20,7 @@ func (s *Server) Decode(config map[string]string) error {
 		Tags           types.SliceString `mapstructure:"tags"`
 		Zone           string            `mapstructure:"zone"`
 		DynamicIP      types.Bool        `mapstructure:"dynamic_ip"`
+		RoutedIP       types.Bool        `mapstructure:"routed_ip"`
 		CommercialType string            `mapstructure:"commercial_type"`
 		Image          *string           `mapstructure:"image"`
 		EnableIPv6     types.Bool        `mapstructure:"enable_ipv6"`
@@ -48,6 +49,7 @@ func (s *Server) Decode(config map[string]string) error {
 		Name:              shadow.Name,
 		Zone:              zone,
 		DynamicIPRequired: bool(shadow.DynamicIP),
+		RoutedIPEnabled:   bool(shadow.RoutedIP),
 		CommercialType:    shadow.CommercialType,
 		Tags:              append([]string{"nomad", "client", "autoscaler"}, shadow.Tags...),
 		EnableIPv6:        bool(shadow.EnableIPv6),
@@ -77,6 +79,7 @@ func (s *Server) CreateServerRequest() *instance.CreateServerRequest {
 		Zone:              s.Zone,
 		Name:              s.Name,
 		DynamicIPRequired: &s.DynamicIPRequired,
+		RoutedIPEnabled:   &s.RoutedIPEnabled,
 		CommercialType:    s.CommercialType,
 		Volumes:           map[string]*instance.VolumeServerTemplate{},
 		EnableIPv6:        s.EnableIPv6,
